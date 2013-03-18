@@ -41,6 +41,7 @@
 
 (require 'pos-tip)
 
+;;;###autoload
 (defun clippy-describe-function (function)
   "Display the full documentation of FUNCTION (a symbol) in tooltip."
   (interactive (list (function-called-at-point)))
@@ -67,13 +68,13 @@
          (erase-buffer)
          (help-mode)
          (toggle-read-only -1)
-         (insert "It looks like you want to know about function `")
+         (insert "It looks like you want to know more about function `")
          (prin1 function)
          (insert "'.\n\n")
          (prin1 function)
          (princ " is ")
          (describe-function-1 function)
-         (setq longest-line (clippy-get-longest-line (point-min) (point-max)))
+         (setq longest-line (clippy--get-longest-line (point-min) (point-max)))
          (setq longest-line-margin (+ 2 longest-line))
          (message (int-to-string longest-line))
          (setq lines (line-number-at-pos (point-max)))
@@ -105,18 +106,18 @@
          (buffer-string)))
      nil nil nil 0)))
 
-(defun clippy-get-longest-line (begin end)
+(defun clippy--get-longest-line (begin end)
   (interactive "r")
   (save-excursion
-    (let ((mp (clippy-get-column)))
+    (let ((mp (clippy--get-column)))
       (goto-char begin)
       (while (< (point) end)
         (end-of-line 2)
-        (let ((m (clippy-get-column)))
+        (let ((m (clippy--get-column)))
           (when (> m mp) (setq mp m))))
       mp)))
 
-(defun clippy-get-column ()
+(defun clippy--get-column ()
   (save-excursion
     (length (buffer-substring-no-properties (progn (beginning-of-line) (point))
                                             (progn (end-of-line) (point))))))
