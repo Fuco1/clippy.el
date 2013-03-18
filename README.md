@@ -5,9 +5,13 @@ Show tooltip with function documentation at point.
 
 Bind the function `clippy-describe-function`, then while point is
 over a function, call it.  A popup with helpfull clippy will
-appear.
+appear. To make it go away, simply invoke any command (move forward/backward, type, `C-g` etc.).
 
 This package depends on `pos-tip`.
+
+Code is roughly based on: http://www.emacswiki.org/emacs/PosTip#toc3
+
+The inspiration to write this package came from [http://www.geekzone.co.nz/foobar/5656](http://www.geekzone.co.nz/foobar/5656), a crazy discussion on #emacs and my terrible headache stopping me from doing anything more productive.
 
 Screenshot
 =========
