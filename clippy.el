@@ -41,6 +41,36 @@
 
 (require 'pos-tip)
 
+(defgroup clippy ()
+  "Clippy helpful popup.")
+
+(defcustom clippy-art
+'(" __
+/  \\
+|  |
+@  @
+|| ||  <--
+|| ||
+|\\_/|
+\\___/     "
+  " __
+|  |@
+| @|
+|| ||
+|| ||  <--
+|`-´|
+ \\_/
+          ")
+  "List of various clippy ascii arts. Should be formated to 8
+lines and 10 columns."
+  :type '(repeat string)
+  :group 'clippy)
+
+(defcustom clippy-use-art 0
+  "Index to the `clippy-art' array for a clippy to use."
+  :type 'integer
+  :group 'clippy)
+
 ;;;###autoload
 (defun clippy-describe-function (function)
   "Display the full documentation of FUNCTION (a symbol) in tooltip."
@@ -55,15 +85,7 @@
              (longest-line 0)
              (longest-line-margin 0)
              (lines 0))
-         (insert
-          " __
-/  \\
-|  |
-@  @
-|| ||  <--
-|| ||
-|\\_/|
-\\___/     ")
+         (insert (nth clippy-use-art clippy-art))
          (copy-rectangle-to-register ?c (point-min) (point-max) t)
          (erase-buffer)
          (help-mode)
