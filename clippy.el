@@ -126,7 +126,10 @@ lines and 10 columns."
            (goto-line (+ i 10))
            (insert "          "))
          (buffer-string)))
-     nil nil nil 0)))
+     nil nil nil 0)
+    (unwind-protect
+        (push (read-event) unread-command-events)
+      (pos-tip-hide))))
 
 (defun clippy--get-longest-line (begin end)
   (interactive "r")
