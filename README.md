@@ -17,3 +17,7 @@ Screenshot
 =========
 
 ![Clippy trying to be helpful](https://raw.github.com/Fuco1/clippy.el/master/clippy.png)
+
+Alternative clippy art.
+
+![Alternative clippy trying to be helpful](https://raw.github.com/Fuco1/clippy.el/master/clippy2.png)
