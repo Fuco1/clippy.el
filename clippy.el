@@ -95,6 +95,7 @@ lines and 10 columns."
          (toggle-read-only -1)
          (insert "It looks like you want to know more about function `")
          (prin1 function)
+         (let ((fill-column 72)) (fill-paragraph))
          (insert "'.\n\n")
          (prin1 function)
          (princ " is ")
