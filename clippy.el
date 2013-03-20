@@ -84,7 +84,10 @@ lines and 10 columns."
              (help-xref-following t)
              (longest-line 0)
              (longest-line-margin 0)
-             (lines 0))
+             (lines 0)
+             ;; this will ensure we do not mangle user's possible
+             ;; values in registers 'c' and 'd'
+             (register-alist nil))
          (insert (nth clippy-use-art clippy-art))
          (copy-rectangle-to-register ?c (point-min) (point-max) t)
          (erase-buffer)
