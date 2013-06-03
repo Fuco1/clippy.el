@@ -148,8 +148,7 @@ lines and 10 columns."
 
 (defun clippy--get-column ()
   (save-excursion
-    (length (buffer-substring-no-properties (progn (beginning-of-line) (point))
-                                            (progn (end-of-line) (point))))))
+    (- (progn (end-of-line) (point)) (progn (beginning-of-line) (point)))))
 
 (provide 'clippy)
 ;;; clippy.el ends here
