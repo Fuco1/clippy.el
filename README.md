@@ -1,4 +1,4 @@
-clippy.el
+clippy.el [![Paypal logo](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=TAWNECQR3TTUY)
 =========
 
 This library implements rendering of popup box with "Clippy, the paper clip". You can make him say various things by calling `clippy-say` function. To hide the pop-up, simply invoke any command (move forward/backward, type, `C-g` etc., any event is recognized).
