@@ -205,7 +205,7 @@ columns."
       (insert "'.\n\n")
       (prin1 variable)
       (princ " is ")
-      (describe-variable variable)
+      (save-window-excursion (describe-variable variable))
       (toggle-read-only -1)
       (let ((fill-column 72)) (clippy--fill-buffer))
       (buffer-string))))
