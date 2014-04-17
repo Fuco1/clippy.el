@@ -89,10 +89,7 @@ The box disappears after the next input event.
 
 If optional argument FILL is non-nil, the text is filled to 72
 columns."
-  (funcall clippy-tip-show-function (clippy-tip text fill))
-  (unwind-protect
-      (push (read-event) unread-command-events)
-    (pos-tip-hide)))
+  (funcall clippy-tip-show-function (clippy-tip text fill)))
 
 (defun clippy-tip (text &optional fill)
   (with-temp-buffer
@@ -146,7 +143,10 @@ columns."
 
 (defun clippy-pos-tip-show (string)
   "Show STRING using pos-tip-show."
-  (pos-tip-show string nil nil nil 0))
+  (pos-tip-show string nil nil nil 0)
+  (unwind-protect
+      (push (read-event) unread-command-events)
+    (pos-tip-hide)))
 
 (defun clippy-popup-tip-show (string)
   "Show STRING using popup-tip."
