@@ -3,9 +3,13 @@ clippy.el [![Paypal logo](https://www.paypalobjects.com/en_US/i/btn/btn_donate_L
 
 This library implements rendering of popup box with "Clippy, the paper clip". You can make him say various things by calling `clippy-say` function. To hide the pop-up, simply invoke any command (move forward/backward, type, `C-g` etc., any event is recognized).
 
+By default Clippy show tip using `pos-tip`. you may prefer using `popup`.
+
+`(setq clippy-tip-show-function #'clippy-popup-tip-show)`
+
 As inspiration, two functions are provided: `clippy-describe-function` and `clippy-describe-variable`. Bind any of these functions to a key, then while point is over a function/variable, call it. A popup with helpfull clippy will appear, telling you about the function/variable (using `describe-function` and `describe-variable` respectively).
 
-This package depends on `pos-tip`.
+This package depends on `pos-tip` or `popup`.
 
 Code is roughly based on: http://www.emacswiki.org/emacs/PosTip#toc3
 
