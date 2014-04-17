@@ -78,7 +78,7 @@ lines and 10 columns."
 
 (defcustom clippy-tip-show-function #'clippy-pos-tip-show
   "Function to display clippy.
-There are two predefined function #'clippy-pos-tip-show and #'clippy-popup-tip-show."
+There are two predefined function `clippy-pos-tip-show' and `clippy-popup-tip-show'."
   :options '(#'clippy-pos-tip-show #'clippy-popup-tip-show)
   :type 'function
   :group 'clippy
