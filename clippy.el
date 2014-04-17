@@ -76,6 +76,14 @@ lines and 10 columns."
   :type 'integer
   :group 'clippy)
 
+(defcustom clippy-tip-show-function #'clippy-pos-tip-show
+  "Function to display clippy.
+There are two predefined function `clippy-pos-tip-show' and `clippy-popup-tip-show'."
+  :options '(#'clippy-pos-tip-show #'clippy-popup-tip-show)
+  :type 'function
+  :group 'clippy
+)
+
 ;;;###autoload
 (defun clippy-say (text &optional fill)
   "Display pop-up box with Clippy saying TEXT.
@@ -83,8 +91,10 @@ The box disappears after the next input event.
 
 If optional argument FILL is non-nil, the text is filled to 72
 columns."
-  (pos-tip-show
-   (with-temp-buffer
+  (funcall clippy-tip-show-function (clippy-tip text fill)))
+
+(defun clippy-tip (text &optional fill)
+  (with-temp-buffer
      (insert text)
      (when fill
        (let ((fill-column 72)) (clippy--fill-buffer))
@@ -131,11 +141,19 @@ columns."
        (dotimes (i (- lines 7))
          (goto-line (+ i 10))
          (insert "          "))
-       (buffer-string)))
-   nil nil nil 0)
+       (buffer-string))))
+
+(defun clippy-pos-tip-show (string)
+  "Show STRING using pos-tip-show."
+  (pos-tip-show string nil nil nil 0)
   (unwind-protect
       (push (read-event) unread-command-events)
     (pos-tip-hide)))
+
+(defun clippy-popup-tip-show (string)
+  "Show STRING using popup-tip."
+  (popup-tip string))
+
 
 ;;;###autoload
 (defun clippy-describe-function (function)
