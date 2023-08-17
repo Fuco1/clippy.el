@@ -94,53 +94,67 @@ columns."
 
 (defun clippy-tip (text &optional fill)
   (with-temp-buffer
-     (insert text)
-     (when fill
-       (let ((fill-column 72)) (clippy--fill-buffer))
-       (setq text (buffer-string)))
-     (let* ((longest-line (clippy--get-longest-line (point-min) (point-max)))
-            (longest-line-margin (+ 2 longest-line))
-            (real-lines (line-number-at-pos (point-max)))
-            (lines (max 7 real-lines))
-            ;; this will ensure we do not mangle user's possible
-            ;; values in registers 'c' and 'd'
-            (register-alist nil))
-       (erase-buffer)
-       (insert (nth clippy-use-art clippy-art))
-       (copy-rectangle-to-register ?c (point-min) (point-max) t)
-       (erase-buffer)
-       (insert text)
-       (when (<= real-lines 7)
-         (goto-char (point-min))
-         (insert (make-string (ceiling (- 7 real-lines) 2) ?\n))
-         (goto-char (point-max))
-         (insert (make-string (/ (- 7 real-lines) 2) ?\n)))
-       (goto-char (point-max))
-       (insert (make-string longest-line ? ))
-       (beginning-of-line)
-       (forward-char longest-line)
-       (copy-rectangle-to-register ?d (point-min) (point) t)
-       (erase-buffer)
-       (dotimes (i lines)
-         (insert "|  |\n")) ; create the borders
-       (goto-char 3)
-       (insert-register ?d) ; copy in the text
-       (goto-char (point-min))
-       (insert-register ?c) ; copy in clippy
-       (goto-char 11)
-       (delete-char 1)
-       (insert "/")
-       (goto-char (+ 12 longest-line-margin))
-       (delete-char 1)
-       (insert "\\")
-       (goto-char (point-min)) ; top line
-       (insert "           " (make-string longest-line-margin ?_) "\n")
-       (goto-char (point-max)) ; bottom line
-       (insert "\\" (make-string longest-line-margin ?_)"/")
-       (dotimes (i (- lines 7))
-         (goto-line (+ i 10))
-         (insert "          "))
-       (buffer-string))))
+    (insert text)
+    (when fill
+      (let ((fill-column 72)) (clippy--fill-buffer))
+      (setq text (buffer-string)))
+    (let* ((longest-line (clippy--get-longest-line (point-min) (point-max)))
+           (longest-line-margin (+ 2 longest-line))
+           (real-lines (line-number-at-pos (point-max)))
+           (lines (max 7 real-lines))
+           ;; this will ensure we do not mangle user's possible
+           ;; values in registers 'c' and 'd'
+           (register-alist nil))
+      (erase-buffer)
+
+      ;; copy clippy
+      (insert (nth clippy-use-art clippy-art))
+      (copy-rectangle-to-register ?c (point-min) (point-max) t)
+      (erase-buffer)
+
+      (insert text)
+      (when (<= real-lines 7)
+        (goto-char (point-min))
+        (insert (make-string (ceiling (- 7 real-lines) 2) ?\n))
+        (goto-char (point-max))
+        (insert (make-string (/ (- 7 real-lines) 2) ?\n)))
+      (goto-char (point-max))
+      (insert (make-string longest-line ? )) ; add space to end of text to correctly position the last side border
+
+      ;; make end of line spacing consistent
+      (goto-char (point-min))
+      (while (not (eobp))
+	(move-end-of-line nil)
+	(when (> longest-line (current-column))
+	  (insert (make-string (- longest-line (current-column)) ? )))
+	(forward-line 1))
+      
+      (beginning-of-line)
+      (forward-char longest-line)
+      (copy-rectangle-to-register ?d (point-min) (point) t)
+      (erase-buffer)
+
+      
+      (dotimes (i lines)
+        (insert "|  |\n")) ; create the borders
+      (goto-char 3)
+      (insert-register ?d) ; paste in the text
+      (goto-char (point-min))
+      (insert-register ?c) ; paste in clippy
+      (goto-char 7)
+      (delete-char 1)
+      (insert "/")
+      (goto-char (+ 12 longest-line-margin))
+      (delete-char 1)
+      (insert "\\")
+      (goto-char (point-min)) ; top line
+      (insert "           " (make-string longest-line-margin ?_) "\n")
+      (goto-char (point-max)) ; bottom line
+      (insert "\\" (make-string longest-line-margin ?_)"/")
+      (dotimes (i (- lines 7))
+        (goto-line (+ i 10))
+        (insert "          "))
+      (buffer-string))))
 
 (defun clippy-pos-tip-show (string)
   "Show STRING using pos-tip-show."
