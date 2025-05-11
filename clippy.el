@@ -6,7 +6,7 @@
 ;; Maintainer: Matus Goljer <matus.goljer@gmail.com>
 ;; Created: 18 Mar 2013
 ;; Keywords: docs
-;; Version: 1.1
+;; Version: 1.2
 ;; Package-Requires: ((pos-tip "1.0"))
 ;; URL: https://github.com/Fuco1/clippy.el
 
@@ -35,12 +35,13 @@
 ;; command (move forward/backward, type, `C-g` etc., any event is
 ;; recognized).
 
-;; As inspiration, two functions are provided:
-;; `clippy-describe-function' and `clippy-describe-variable'.  Bind
-;; any of these functions to a key, then while point is over a
-;; function/variable, call it.  A popup with helpfull clippy will
-;; appear, telling you about the function/variable (using
-;; `describe-function' and `describe-variable' respectively).
+;; As inspiration, three functions are provided:
+;; `clippy-describe-function', `clippy-describe-variable' and
+;; `clippy-describe-symbol'.  Bind any of these functions to a key,
+;; then while point is over a function/variable, call it.  A popup
+;; with helpfull clippy will appear, telling you about the
+;; function/variable (using `describe-function' and
+;; `describe-variable' ).
 
 ;;; Code:
 
@@ -185,6 +186,17 @@ columns."
       (pos-tip-show
        "** You didn't specify a variable! **" '("red"))
     (clippy-say (clippy--get-variable-description variable))))
+
+;;;###autoload
+(defun clippy-describe-symbol (symbol)
+  "Display the full documentation of SYMBOL (a symbol) in tooltip."
+  (interactive (list (symbol-at-point)))
+  (if (null symbol)
+      (pos-tip-show
+       "** You didn't specify a symbol! **" '("red"))
+    (clippy-say (if (functionp symbol)
+                    (clippy--get-function-description symbol)
+                  (clippy--get-variable-description symbol)))))
 
 
 ;;;;; utility
